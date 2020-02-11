@@ -1,4 +1,5 @@
 # RaspberryPi-MagicMirror
+    
     ```
     上手型项目
     ```
@@ -18,15 +19,22 @@
 0. 树莓派ssh服务已打开.
 1. 网线连接PC与树莓派.
 2. 通过cmd获取树莓派ip.
-    `ping raspberrypi`
+    ```
+    ping raspberrypi
+    ```
 3. 以获取的树莓派ip地址通过PC的ssh客户端连接,默认端口22.用户名pi,密码raspberry.
 4. 打开树莓派的vnc服务并且获取服务端口.
-    `sudo vncserver`
+    ```
+    sudo vncserver
+    ```
 5. 用PC上的vncviewer以指定`ip:port`以打开桌面.
 6. 桌面界面打开终端`sudo raspi-config`打开设置,选择`5.interfacing options`设置开机启动ssh与vnc.
 
 ### 设置开机自动连接WiFi.
-1. `sudo nano /etc/wpa_supplicant/wpa_supplicant.conf`打开WiFi设置.
+1. 打开WiFi设置.
+    ```
+    sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
+    ```
 2. 添加如下文本
     ```
     network={
@@ -39,8 +47,10 @@
     重启生效.
 
 ### 安装Hybrid字体
-1. 下载字体,
-    `git clone https://github.com/dodd97/RaspberryPi-MagicMirror/YaHei-Consolas-Hybrid-1.12`
+1. 下载字体.
+    ```
+    git clone https://github.com/dodd97/RaspberryPi-MagicMirror/YaHei-Consolas-Hybrid-1.12
+    ```
 2. 新建字体文件夹并且拷贝字体文件到字体文件夹下
     ```
     sudo mkdir /usr/share/fonts/truetype/myfonts
@@ -59,7 +69,7 @@
     ```
 
 ### 魔镜系统安装
-1.  系统清理与升级
+1.  系统清理与升级.
     ```
     sudo apt-get remove --purge idle3 java-common libreoffice* minecraft-pi scratch nuscratch penguinspuzzle python-minecraftpi python3-minecraftpi smartsim sonic-pi wolfram-engine
     sudo apt-get autoremove
@@ -73,8 +83,67 @@
     sudo apt install -y nodejs
     npm install -g cnpm --registry=https://registry.npm.taobao.org
     ```
-3. 下载魔镜资源`git clone https://github.com/MichMich/MagicMirror`.
-4. RaspbianBuster，需要升级Electron`npm install electron@6.0.12`.
+3. 下载魔镜资源
+    ```
+    git clone https://github.com/MichMich/MagicMirror
+    ```
+4. RaspbianBuster，需要升级Electron
+    ```
+    cnpm install electron@6.0.12
+    ```
 5. 安装魔镜系统
+    ```
+    cnpm MagicMirror/install
+    ```
+
+### 配置文件编写
+1. 修改基础配置文件:
+    ```
+    sudo nano MagicMirror/config/config.js
+    ```
+2. 修改问候语模块配置文件:
+    ```
+    sudo nano MagicMirror/modules/default/compliments/compliments.js
+    ```
+3. 设置显示器垂直显示:
+    ```
+    sudo nano /boot/config.txt
+    在最后添加
+    # Rotate display vertically
+    display_rotate=1
+    ```
+4. 禁止屏保和锁屏:
+    ```
+    sudo nano /etc/xdg/lxsession/LXDE-pi/autostart
+    ```
+    在最后添加
+    ```
+    @xset s noblank
+    @xset s off
+    @xset -dpms
+    ```
+    保存退出
+    ```
+    sudo nano /etc/lightdm/lightdm.conf
+    ```
+    在[Seat:*]部分添加`xserver-command=X -s 0 -dpms`
+    ![](README_files/1.jpg)
+    
+5. 关闭省电模式,防止WiFi自动断联
+    ```
+    sudo iw dev wlan0 set power_save off
+    ```
+    
+
+### 启动魔镜
+    重启
+    ```
+    cd MagicMirror/
+    cnpm start 
+    ```
+    可从按键Alt打开的状态栏内退出.
+
+
+
  
 
