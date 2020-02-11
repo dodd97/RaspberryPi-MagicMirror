@@ -12,37 +12,69 @@
     hdmi_force_hotplug=1    //开启树莓派HDMI输出热拔插
     config_hdmi_boost=4     ///开启树莓派HDMI输出信号增强
     ```
-4. 
-    
-    
-    
-    在/usr/share/fonts/truetype/下建立文件夹myfonts，然后拷贝上述字体到改文件夹下。
-             sudo mkdir /usr/share/fonts/truetype/myfonts
-             cp *.ttf  /usr/share/fonts/truetype/myfonts/
-        3. 更改myfonts和该目录下面的权限，可以都设成777
-             sudo chmod -c 777 /usr/share/fonts/truetype/myfonts
-             sudo chmode -c 777 /usr/share/fonts/truetype/myfonts/*
-        4. 最后就是注册新添加字体了，执行如下命令：
-             sudo mkfontscale
-             sudo mkfontdir
-             sudo fc-cache -fv
+4. 连接输入输出设备,开机依据向导完成基础设置.
 
-sudo apt-get remove --purge idle3 java-common libreoffice* minecraft-pi scratch nuscratch penguinspuzzle python-minecraftpi python3-minecraftpi smartsim sonic-pi wolfram-engine
-sudo apt-get autoremove
-sudo apt-get update
-sudo apt-get upgrade
-sudo rpi-update
+### 树莓派与笔记本的vnc连接
+0. 树莓派ssh服务已打开.
+1. 网线连接PC与树莓派.
+2. 通过cmd获取树莓派ip.
+    `ping raspberrypi`
+3. 以获取的树莓派ip地址通过PC的ssh客户端连接,默认端口22.用户名pi,密码raspberry.
+4. 打开树莓派的vnc服务并且获取服务端口.
+    `sudo vncserver`
+5. 用PC上的vncviewer以指定`ip:port`以打开桌面.
+6. 桌面界面打开终端`sudo raspi-config`打开设置,选择`5.interfacing options`设置开机启动ssh与vnc.
+
+### 设置开机自动连接WiFi.
+1. `sudo nano /etc/wpa_supplicant/wpa_supplicant.conf`打开WiFi设置.
+2. 添加如下文本
+    ```
+    network={
+            ssid="你的WiFi名称"
+            psk="你的WiFi密码"
+            key_mgmt=WPA-PSK        //加密方式
+            priority=5
+    }
+    ```
+    重启生效.
+
+### 安装Hybrid字体
+1. 下载字体,
+    `git clone https://github.com/dodd97/RaspberryPi-MagicMirror/YaHei-Consolas-Hybrid-1.12`
+2. 新建字体文件夹并且拷贝字体文件到字体文件夹下
+    ```
+    sudo mkdir /usr/share/fonts/truetype/myfonts
+    sudo cp *.ttf  /usr/share/fonts/truetype/myfonts/
+    ```
+3. 更改字体文件夹与字体文件权限
+    ```
+    sudo chmod -c 777 /usr/share/fonts/truetype/myfonts
+    sudo chmode -c 777 /usr/share/fonts/truetype/myfonts/*
+    ```
+4. 安装字体与刷新字体缓存
+    ```
+    sudo mkfontscale
+    sudo mkfontdir
+    sudo fc-cache -fv
+    ```
+
+### 魔镜系统安装
+1.  系统清理与升级
+    ```
+    sudo apt-get remove --purge idle3 java-common libreoffice* minecraft-pi scratch nuscratch penguinspuzzle python-minecraftpi python3-minecraftpi smartsim sonic-pi wolfram-engine
+    sudo apt-get autoremove
+    sudo apt-get updatesudo apt-get upgrade
+    sudo rpi-update
+    sudo reboot
+    ```
+2. 安装Node.js与cnpm.
+    ```
+    curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+    sudo apt install -y nodejs
+    npm install -g cnpm --registry=https://registry.npm.taobao.org
+    ```
+3. 下载魔镜资源`git clone https://github.com/MichMich/MagicMirror`.
+4. RaspbianBuster，需要升级Electron`npm install electron@6.0.12`.
+5. 安装魔镜系统
  
- /etc/wpa_supplicant/wpa_supplicant.conf
- ```
- ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
- update_config=1
- country=CN
- 
- network={
-         ssid="CMCC-Yuan"
-         psk="ywg10086584120"
-         key_mgmt=WPA-PSK
-         priority=5
- }
- ```
+
