@@ -1,10 +1,7 @@
 # RaspberryPi-MagicMirror
-    
-    ```
-    上手型项目
-    ```
 
 ## 环境配置
+
 ### 树莓派系统安装
 1. 官网下载系统镜像解压,通过balenaEtcher烧写到内存卡上.
 2. 直接在内存卡中创建无后缀文件`ssh`以开启树莓派的ssh服务.
@@ -67,7 +64,7 @@
     sudo mkfontdir
     sudo fc-cache -fv
     ```
-
+## 魔镜安装
 ### 魔镜系统安装
 1.  系统清理与升级.
     ```
@@ -127,21 +124,22 @@
     sudo nano /etc/lightdm/lightdm.conf
     ```
     在[Seat:*]部分添加`xserver-command=X -s 0 -dpms`
+    
     ![](README_files/1.jpg)
     
 5. 关闭省电模式,防止WiFi自动断联
     ```
     sudo iw dev wlan0 set power_save off
     ```
-    
 
 ### 启动魔镜
-    重启
+1. 重启
+2. 启动    
     ```
     cd MagicMirror/
     cnpm start 
     ```
-    可从按键Alt打开的状态栏内退出.
+3. 退出:Alt打开状态栏退出.
 
 
 
