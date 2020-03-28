@@ -46,7 +46,7 @@
 ### 安装Hybrid字体
 1. 下载字体.
     ```
-    git clone https://github.com/dodd97/RaspberryPi-MagicMirror/YaHei-Consolas-Hybrid-1.12
+    git clone https://github.com/dodd97/RaspberryPi-MagicMirror.git
     ```
 2. 新建字体文件夹并且拷贝字体文件到字体文件夹下
     ```
@@ -70,7 +70,8 @@
     ```
     sudo apt-get remove --purge idle3 java-common libreoffice* minecraft-pi scratch nuscratch penguinspuzzle python-minecraftpi python3-minecraftpi smartsim sonic-pi wolfram-engine
     sudo apt-get autoremove
-    sudo apt-get updatesudo apt-get upgrade
+    sudo apt-get update
+    sudo apt-get upgrade
     sudo rpi-update
     sudo reboot
     ```
